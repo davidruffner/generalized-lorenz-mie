@@ -1,5 +1,4 @@
 ;+
-;diff
 ; NAME:
 ;       spherefield
 ;
