@@ -4,36 +4,49 @@
 ;
 ; PURPOSE:
 ;    Calculate the field from its vector spherical
-;    harmonic coefficients pmn and qmn
+;    harmonic coefficients
 ;
 ;CATEGORY:
 ;    Mathematics
 ;
 ;CALLING SEQUENCE:
-;    E = efield_vsh_sum(rvec,nmax)
+;    E = efield_vsh_sum(x,y,z,bscs,lambda,nm,nc)
 ;
 ;INPUTS:
-;    rvec:    [3,N] array of positions where you want the field
+;    x_,y_,z_:   position vectors of where to evaluate the field
 ;
-;    pnm:     Beam shape coefficients 1
+;    bscs:       beam shape coefficients
+; 
+;    lambda:     wavelength in vacuum 
 ;
-;    qnm:     Beam shape coefficients 2
+;    nm:         refractive index of medium
+;
+;    nc:         maximum value of n to calculate up to
+;
+;KEYWORDS:
+;
+;  Cartesian:   when set gives the field interms of x,y,z components
+;
+;  verbose:     set to give more updates of progress
 ;
 ;OUTPUTS:
-;    E:   [3,N] Electric field vector at each point.
+;    E:   [3,N] Electric field vector at each point usually in terms
+;               of the spherical polar directions
 ;
 ;REFERENCE:
 ;
 ;MODIFICATION HISTORY:
 ; 03/14/2014 Written by David B. Ruffner, New York University
 ; 03/21/2014 Overhaul based on dbr_sphericalfield
+; 04/17/2014 Added nm input, made lambda the vacuum wavelength. David Ruffner
 
-function efield_vsh_sum,x_,y_,z_,bscs,lambda,nc,$
-                        cartesian=cartesian ; project to cartesian coordinates
+function efield_vsh_sum,x_,y_,z_,bscs,lambda,nm,nc,$
+                        cartesian=cartesian,$ ; project to cartesian coordinates
+                        verbose=verbose
 tol = 1.e-12
 npts = n_elements(x_)
 
-k = 2.d * !dpi / lambda         ; wavenumber in medium [pixel^-1]
+k = 2.d * !dpi*nm / lambda         ; wavenumber in medium [pixel^-1]
 
 ci = dcomplex(0,1)
 
@@ -65,13 +78,17 @@ ae_mn = bscs[*,*,1]
 
 szp = size(am_mn)
 nmax = szp[1]-1
+print,nmax
+
+nc = nc<nmax
 
 ; Compute field by summing multipole contributions
 for n = 1.d, nc do begin
    for m = -n,n do begin
       if abs(am_mn[n,m]) lt tol and abs(ae_mn[n,m]) lt tol then continue
-      ;if m eq 0 then continue
-      print,"m,n",m,n,abs(am_mn[n,m]),abs(ae_mn[n,m])
+      if m eq 0 then continue
+      if n_elements(verbose) ne 0 then $
+              print,"m,n",m,n,abs(am_mn[n,m]),abs(ae_mn[n,m])
 ; Calculate the special functions
       pi_mn = -dbr_pi_mn(costheta,n,m);normalized
       tau_mn = -dbr_tau_mn(costheta,n,m);normalized
