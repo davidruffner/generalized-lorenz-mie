@@ -3,5 +3,38 @@ Generalized Lorenz Mie Repository
 This repository holds code for calculating optical fields
 and forces on spherical particles in generalized Lorenz-Mie theory.
 
+There are two main tasks of the code: first it calculates the 
+field of the beam, and second it calculates the force on a spherical 
+particle at some position in the beam.
+
+1. Calculating the field
+  First we write the field in terms of vector spherical harmonics. We
+need the coefficients of the field in this basis. The following 
+codes give these coefficients for Bessel beams, plane waves, and 
+angled planewaves:
+besselcoefficients.pro
+planewavecoefficients.pro
+planewavecoefficientsangled.pro
+ 
+  Next we can input the beam coefficients into efield_vsh_sum.pro which
+gives the electric field vectors at specified points in the beam.
+
+ We have some test code(in /tests) that runs this for a conveyor beam which is a
+superposition of two Bessel beams. Run testconveyorxy.pro and 
+testconveyorxz.pro to get crosssections of the beam. This agrees with 
+Cizmar's paper.
+
+2. Calculating the optical force
+ You need to calculate the beam coefficients using the above codes making 
+sure that you are centered on the particle. Once you have the coefficients
+of the beam then you send these to normbartonforce.pro which gives
+you the force efficiency Q on the particle. 
+
+We also have test code(in /tests) for this. Running 
+testbartonforcevska3fast.pro gives the force on a particle in a 
+plane wave versus particle size. This compares well to Irvine 1964 paper.
+Finally running testconveyoraxialforce.pro gives the axial force along one
+period of an optical conveyor. This agrees with Cizmar's paper.
+
  
 
