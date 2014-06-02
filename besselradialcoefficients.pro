@@ -1,16 +1,16 @@
 ;+
 ;NAME:
-;    BESSELCOEFFICIENTS
+;    BESSELRADIALCOEFFICIENTS
 ;
 ; PURPOSE:
 ;    Calculate the coefficients for the vector spherical harmonics of
-;    a Bessel beam as a function of position in the field
+;    a radially polarized Bessel beam as a function of position in the field
 ;
 ;CATEGORY:
 ;    Mathematics
 ;
 ;CALLING SEQUENCE:
-;    {p_mn,q_mn} = besselcoefficients(pos,theta0,maxn)
+;    {p_mn,q_mn} = besselradialcoefficients(pos,theta0,maxn)
 ;
 ;INPUTS:
 ;    pos:    array of positions where you want the coefficients
@@ -31,11 +31,10 @@
 ;MODIFICATION HISTORY:
 ; 03/06/2014 Written by David B. Ruffner, New York University
 ; 03/21/2014 Updated to match notation of sphericalfield.pro
-; 04/17/14  Added verbose keyword. David Ruffner
+; 04/11/2014 Adapted from besselcoefficients.pro
 
-function besselcoefficients,pos,theta0,nmax,k,verbose=verbose
+function besselradialcoefficients,pos,theta0,nmax,k,azimuthal=azimuthal
 tol = 0.0001d
-if n_elements(verbose) eq 0 then verbose = 0
 
 am_mn = fltarr(nmax+1,2*nmax+1)*complex(1,0)
 ae_mn = fltarr(nmax+1,2*nmax+1)*complex(1,0)
@@ -43,10 +42,10 @@ ae_mn = fltarr(nmax+1,2*nmax+1)*complex(1,0)
 for n=1,nmax do begin
    for m = -n,n do begin
       ;first find the bessel coefficient at required points
-      am_ae = besselcoefficient(n,m,pos,theta0,k)
+      am_ae = besselradialcoefficient(n,m,pos,theta0,k,azimuthal=azimuthal)
       am_mn[n,m] = am_ae[0]
       ae_mn[n,m] = am_ae[1]
-      if abs(am_ae[0]) gt tol and verbose then begin
+      if abs(am_ae[0]) gt tol then begin
          print,"m,n",m,n
          print,am_ae
       endif
