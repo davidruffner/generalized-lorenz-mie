@@ -1,4 +1,7 @@
 Generalized Lorenz Mie Repository
 
-This repository holds code for calculationg optical fields
-and forces in generalized Lorenz-Mie theory. 
+This repository holds code for calculating optical fields
+and forces on spherical particles in generalized Lorenz-Mie theory.
+
+ 
+
