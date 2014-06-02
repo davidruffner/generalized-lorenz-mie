@@ -12,21 +12,21 @@
 ;    force = conveyorradialforce(z_fixed,ap,np,nm,eta1,eta2,intensity,npts)
 ;
 ;INPUTS:
-;    z_fixed:the axial stable fixed point
+;    z_fixed:the axial stable fixed point in um
 ;
-;    ap:     radius of particle  
+;    ap:     radius of particle in um
 ;
 ;    np:     index of refraction of partice
 ;
 ;    nm:     index of refraction of medium
 ;
-;    lambda: vacuum wavelength of trapping light
+;    lambda: vacuum wavelength of trapping light in um
 ;
-;    eta1:   axial wavevector of first bessel beam component
+;    eta1:   norm axial wavevector of first bessel beam component
 ;
-;    eta2:   axial wavevector of second bessel beam component
+;    eta2:   norm axial wavevector of second bessel beam component
 ;
-;    int: in watts/um^2
+;    int: in mW/um^2
 ;
 ;    npts:   number of points to calculate force along
 ;
@@ -37,6 +37,7 @@
 ;
 ;MODIFICATION HISTORY:
 ; 2014/04/14 Written by David B. Ruffner, New York University
+; 2014/06/02 DBR:Fixed bug with f0, updated documentation 
 
 function conveyorradialforce, z_fixed,ap,np,nm,lambda,eta1,eta2,$
                               int=int,npts=npts
@@ -54,7 +55,7 @@ k = 2*!pi*nm/lambda
 
 ;Calculate the force constant
 f0mN = !pi*(ap^2)*int/c & $;mN
-f0 = f0mN*10.^6. & $;pN
+f0 = f0mN*10.^9. & $;pN
 
 
 ;Calculate the sphere coefficients

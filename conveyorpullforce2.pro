@@ -9,24 +9,28 @@
 ;    Mathematics
 ;
 ;CALLING SEQUENCE:
-;    force = conveyorpullforce(ap,np,nm,eta1,eta2,intensity,npts)
+;    force = conveyorpullforce2(ap,np,nm,eta1,eta2,intensity,npts)
 ;
 ;INPUTS:
-;    ap:     radius of particle  
+;    ap:     radius of particle in um 
 ;
 ;    np:     index of refraction of partice
 ;
 ;    nm:     index of refraction of medium
 ;
-;    lambda: vacuum wavelength of trapping light
+;    lambda: vacuum wavelength of trapping light in um 
 ;
-;    eta1:   axial wavevector of first bessel beam component
+;    eta1:   norm axial wavevector of first bessel beam component
 ;
-;    eta2:   axial wavevector of second bessel beam component
+;    eta2:   norm axial wavevector of second bessel beam component
 ;
-;    int: in watts/um^2
+;    int: in mW/um^2
+;
+;KEYWORDS:
 ;
 ;    npts:   number of points to calculate force along
+;
+;    norm:   when set outputs the force efficiency or normalized force
 ;
 ;OUTPUTS:
 ;    force: [3,npts] force vector at each point along period of conveyor 
@@ -54,7 +58,7 @@ k = 2*!pi*nm/lambda
 
 ;Calculate the force constant
 f0mN = !pi*(ap^2.)*int/c & $;mN
-f0 = f0mN*10.^6. & $;pN
+f0 = f0mN*10.^9. & $;pN
 if norm eq 1 then f0 = 1
 ;print,f0
 

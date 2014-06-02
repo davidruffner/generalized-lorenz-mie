@@ -24,9 +24,13 @@
 ;
 ;    eta2:   axial wavevector of second bessel beam component
 ;
-;    int: in watts/um^2
+;KEYWORDS:
+;
+;    int: in mW/um^2
 ;
 ;    npts:   number of points to calculate force along
+;
+;    norm: When set the program outputs additional info
 ;
 ;OUTPUTS:
 ;    force: [3,npts] force vector at each point along period of conveyor 
@@ -35,6 +39,7 @@
 ;
 ;MODIFICATION HISTORY:
 ; 2014/04/14 Written by David B. Ruffner, New York University
+; 2014/06/02 DBR:Fixed bug with f0, updated documentation 
 
 function conveyoraxialforce, ap,np,nm,lambda,eta1,eta2,int=int,npts=npts,$
                              norm=norm
@@ -56,7 +61,7 @@ k = 2*!pi*nm/lambda
 
 ;Calculate the force constant
 f0mN = !pi*(ap^2.)*int/c & $;mN
-f0 = f0mN*10.^6. & $;pN
+f0 = f0mN*10.^9. & $;pN
 ;print,f0
 
 ;Calculate the sphere coefficients
