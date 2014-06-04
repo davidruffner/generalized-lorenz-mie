@@ -46,6 +46,8 @@
 ; 2014/04/14 Written by David B. Ruffner, New York University
 ; 2014/05/14 Added norm,verbose keywords DBR
 ; 2014/06/02 DBR:Fixed bug with f0, updated documentation 
+; 2014/06/04 DBR:Made the conveyor beam normalized at intensity maxima
+;                by dividing the bessel beam coefficients by two.
 
 
 function conveyorxforce, z_fixed,ap,np,nm,lambda,eta1,eta2,$
@@ -93,7 +95,7 @@ for i=0,npts-1 do begin $
    pos=[xs[i],0,z_fixed] & $
    bscs1 = besselcoefficients(pos,theta1,nc,k) & $
    bscs2 = besselcoefficients(pos,theta2,nc,k) & $
-   bscs = bscs1+bscs2 & $
+   bscs = (bscs1+bscs2)/2. & $
    ;Calculate the force
    forces[*,i] = f0*normbartonforce(bscs,ap,np,nm,lambda) & $
 endfor

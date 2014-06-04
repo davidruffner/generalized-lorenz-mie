@@ -47,7 +47,7 @@ print,"getting coefficients"
 pos=[0,0,0]
 bscs1 = besselcoefficients(pos,theta1,nmax,k)
 bscs2 = besselcoefficients(pos,theta2,nmax,k)
-bscs = bscs1+bscs2
+bscs = (bscs1+bscs2)/2.
 
 print,"calculating the field"
 e = efield_vsh_sum(x,y,z,bscs,lambda,nm,nmax,/cartesian)

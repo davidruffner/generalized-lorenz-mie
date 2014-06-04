@@ -80,7 +80,7 @@ for i=0,npts-1 do begin $
    pos=[0,ys[i],z_fixed] & $
    bscs1 = besselcoefficients(pos,theta1,nc,k) & $
    bscs2 = besselcoefficients(pos,theta2,nc,k) & $
-   bscs = bscs1+bscs2 & $
+   bscs = (bscs1+bscs2)/2. & $
    ;Calculate the force
    forces[*,i] = f0*normbartonforce(bscs,ap,np,nm,lambda) & $
 endfor

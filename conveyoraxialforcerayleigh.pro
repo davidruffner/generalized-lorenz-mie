@@ -36,6 +36,7 @@
 ;
 ;MODIFICATION HISTORY:
 ; 2014/04/14 Written by David B. Ruffner, New York University
+; 2014/06/14 DBR: Note, I need to normalize the conveyor but not sure how
 
 function conveyoraxialforcerayleigh, ap,np,nm,lambda,eta1,eta2,$
                                      int=int,npts=npts
