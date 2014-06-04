@@ -42,12 +42,14 @@
 ; 2014/06/02 DBR:Fixed bug with f0, updated documentation 
 ; 2014/06/04 DBR:Made the conveyor beam normalized at intensity maxima
 ;                by dividing the bessel beam coefficients by two.
+;                Fixed bug with norm keyword
 
 function conveyoraxialforce, ap,np,nm,lambda,eta1,eta2,int=int,npts=npts,$
                              norm=norm
 
 if n_elements(npts) eq 0 then npts = 100
 if n_elements(int) eq 0 then int = 1.
+if n_elements(norm) eq 0 then norm = 0
 
 ;speed of light
 c = 299792458.d; m/s
