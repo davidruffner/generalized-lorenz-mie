@@ -39,6 +39,7 @@
 ;MODIFICATION HISTORY:
 ; 03/18/2014 Written by David B. Ruffner, New York University
 ; 03/25/2014 Fixed a bug when m=0. Now it doesn't blow up
+; 06/04/2014 DBR: commented out the low precision at poles message
 
 
 function dbr_tau_mn,x, n, minput
@@ -79,7 +80,7 @@ if m eq 0 then begin
                (n + 1.d)*x*dbr_plegendre(x,n,m))/sintheta
    b = where(abs(sintheta) lt tol,/null)
    if ~(b eq !NULL) then begin
-      print,"Low precision near pole, setting tau_mn to zero there"
+      ;print,"Low precision near pole, setting tau_mn to zero there"
       tau_mn(b) = 0
    endif
 endif else begin

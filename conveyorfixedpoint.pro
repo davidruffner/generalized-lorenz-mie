@@ -78,6 +78,7 @@ endwhile
 
 ;If you don't find any axial stable point then exit
 if ~found then begin
+   print,"no stable fixed point!"
    return, [-1,0,0,0]
 endif
 
