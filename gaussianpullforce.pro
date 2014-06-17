@@ -9,7 +9,8 @@
 ;    Mathematics
 ;
 ;CALLING SEQUENCE:
-;    force = gaussianpullforce(ap,np,nm,thetaG,gamma,int=int,nt=nt,norm=norm)
+;    force = gaussianpullforce(ap,np,nm,lambda,$
+;                              thetaG,gamma,int=int,nt=nt,norm=norm)
 ;
 ;INPUTS:
 ;    ap:     radius of particle in um 
