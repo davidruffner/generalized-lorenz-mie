@@ -44,39 +44,111 @@
 ; 06/13/2014 Edited by David B. Ruffner, New York University: combined
 ;             gaussiantrapcoefficient1.pro and gaussiantrapcoefficient2.pro 
 
+
+function am_integrandreal,theta
+common share1,params
+k = params.k
+w0 = params.w0
+n = params.n
+m = params.m
+pos = params.pos
+gamma = params.gamma
+
+;calculate multiplicative factor for gaussian beam
+fac  =  k^2.d * w0^2.d / (4.d * !dpi)
+fac *= SQRT(COS(theta))
+fac *= EXP(-(gamma * SIN(theta))^2.d)
+fac *= SIN(theta)
+;Call besselcoefficient
+am_aepart = fac*besselcoefficient(n,m,pos,theta,k)
+
+return,real_part(am_aepart[0])
+end
+
+function ae_integrandreal,theta
+common share1,params
+k = params.k
+w0 = params.w0
+n = params.n
+m = params.m
+pos = params.pos
+gamma = params.gamma
+
+;calculate multiplicative factor for gaussian beam
+fac  =  k^2.d * w0^2.d / (4.d * !dpi)
+fac *= SQRT(COS(theta))
+fac *= EXP(-(gamma * SIN(theta))^2.d)
+fac *= SIN(theta)
+;Call besselcoefficient
+am_aepart = fac*besselcoefficient(n,m,pos,theta,k)
+
+
+return,real_part(am_aepart[1])
+end
+
+function am_integrandimaginary,theta
+common share1,params
+k = params.k
+w0 = params.w0
+n = params.n
+m = params.m
+pos = params.pos
+gamma = params.gamma
+
+;calculate multiplicative factor for gaussian beam
+fac  =  k^2.d * w0^2.d / (4.d * !dpi)
+fac *= SQRT(COS(theta))
+fac *= EXP(-(gamma * SIN(theta))^2.d)
+fac *= SIN(theta)
+;Call besselcoefficient
+am_aepart = fac*besselcoefficient(n,m,pos,theta,k)
+
+return,imaginary(am_aepart[0])
+end
+
+function ae_integrandimaginary,theta
+common share1,params
+k = params.k
+w0 = params.w0
+n = params.n
+m = params.m
+pos = params.pos
+gamma = params.gamma
+
+;calculate multiplicative factor for gaussian beam
+fac  =  k^2.d * w0^2.d / (4.d * !dpi)
+fac *= SQRT(COS(theta))
+fac *= EXP(-(gamma * SIN(theta))^2.d)
+fac *= SIN(theta)
+;Call besselcoefficient
+am_aepart = fac*besselcoefficient(n,m,pos,theta,k)
+
+return,imaginary(am_aepart[1])
+end
+
+
+
 function gaussiantrapcoefficient,n,m,pos,k,gamma,thetaG,NT
 
-;define integration step angles
-delta = dindgen(NT) * thetaG / (NT-1)
-
-;define arrays for storage of step coefficients
-am_mn_temp = dcomplexarr(NT)
-ae_mn_temp = dcomplexarr(NT)
+common share1, params
 
 ;calculate w0
 w0 = SQRT(8.d * !Pi) / (k * sin(thetaG))
 
-;fill up arrays of integrand coefficients
-for i=0L, NT-1L do begin
- theta = delta[i]
- ;calculate multiplicative factor for gaussian beam
- fac  =  k^2.d * w0^2.d / (4.d * !dpi)
- fac *= SQRT(COS(theta))
- fac *= EXP(-(gamma * SIN(theta))^2.d)
- fac *= SIN(theta)
- ;Cal besselcoefficient
- am_ae = fac*besselcoefficient(n,m,pos,theta,k)
- 
- am_mn_temp[i] = am_ae[0]
- ae_mn_temp[i] = am_ae[1]
-endfor 
+params = {w0:w0,$
+          n:n,$
+          m:m,$
+          pos:pos,$
+          gamma:gamma,$
+          k:k}
 
-;perform integration
-am_mn_real = INT_TABULATED(delta,REAL_PART(am_mn_temp))
-am_mn_imaginary = INT_TABULATED(delta,IMAGINARY(am_mn_temp))
-ae_mn_real = INT_TABULATED(delta,REAL_PART(ae_mn_temp))
-ae_mn_imaginary = INT_TABULATED(delta,IMAGINARY(ae_mn_temp))
-
+eps = 10^(-5.)
+print,"getting trap coefficient",m,n
+am_mn_real = qsimp('am_integrandreal',0,thetaG,eps=eps)
+ae_mn_real = qsimp('ae_integrandreal',0,thetaG,eps=eps)
+am_mn_imaginary = qsimp('am_integrandimaginary',0,thetaG,eps=eps)
+ae_mn_imaginary = qsimp('ae_integrandimaginary',0,thetaG,eps=eps)
+print,"done with integrals"
 ci = dcomplex(0.d,1.d)
 am_mn = am_mn_real + ci * am_mn_imaginary
 ae_mn = ae_mn_real + ci * ae_mn_imaginary
