@@ -43,7 +43,6 @@
 ; 06/11/2014 Written by Henrique W. Moyses, New York University
 ; 06/13/2014 Edited by David B. Ruffner, New York University: combined
 ;             gaussiantrapcoefficient1.pro and gaussiantrapcoefficient2.pro 
-function integral
 
 function gaussiantrapcoefficientint,n,m,pos,k,gamma,thetaG,NT
 
@@ -51,7 +50,7 @@ function gaussiantrapcoefficientint,n,m,pos,k,gamma,thetaG,NT
 delta = dindgen(NT) * thetaG / (NT-1)
 
 ;define arrays for storage of step coefficients
-am_mn_temp = dcomplexarr(NT)
+am_mn_temp = dcomplexarr(NT) 
 ae_mn_temp = dcomplexarr(NT)
 
 ;calculate w0

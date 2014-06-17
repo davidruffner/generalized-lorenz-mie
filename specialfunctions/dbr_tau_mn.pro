@@ -80,7 +80,7 @@ if m eq 0 then begin
                (n + 1.d)*x*dbr_plegendre(x,n,m))/sintheta
    b = where(abs(sintheta) lt tol,/null)
    if ~(b eq !NULL) then begin
-      ;print,"Low precision near pole, setting tau_mn to zero there"
+      ;print,"Low precision near pole, setting tau_mn to zero",n,m,sintheta
       tau_mn(b) = 0
    endif
 endif else begin

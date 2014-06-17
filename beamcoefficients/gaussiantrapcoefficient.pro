@@ -142,13 +142,13 @@ params = {w0:w0,$
           gamma:gamma,$
           k:k}
 
-eps = 10^(-5.)
-print,"getting trap coefficient",m,n
+eps = 10^(-3.)
+;print,"getting trap coefficient",m,n
 am_mn_real = qsimp('am_integrandreal',0,thetaG,eps=eps)
 ae_mn_real = qsimp('ae_integrandreal',0,thetaG,eps=eps)
 am_mn_imaginary = qsimp('am_integrandimaginary',0,thetaG,eps=eps)
 ae_mn_imaginary = qsimp('ae_integrandimaginary',0,thetaG,eps=eps)
-print,"done with integrals"
+;print,"done with integrals"
 ci = dcomplex(0.d,1.d)
 am_mn = am_mn_real + ci * am_mn_imaginary
 ae_mn = ae_mn_real + ci * ae_mn_imaginary
