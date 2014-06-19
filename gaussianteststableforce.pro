@@ -1,14 +1,16 @@
 ;program to test if the gaussian beam is transversely stable at a given
 ;axial position.
 
-function gaussianteststableforce,stableroot,ap,np,nm,lambda,eta1,eta2
+function gaussianteststableforce,stableroot,ap,np,nm,lambda,thetaG,gamma,$
+                                     nt=nt
+if n_elements(nt) eq 0 then nt=30
 
 ;Check if it's transversly stable
 nptsx = 5
-forcesx = gaussianxforce(stableroot,ap,np,nm,lambda,eta1,eta2,$
-                                               norm=1,int=1,npts=nptsx)
-forcesy = gaussianyforce(stableroot,ap,np,nm,lambda,eta1,eta2,$
-                                               norm=1,int=1,npts=nptsx)
+forcesx = gaussianxforce(stableroot,ap,np,nm,lambda,thetaG,gamma,$
+                                               nt=nt,norm=1,npts=nptsx)
+forcesy = gaussianyforce(stableroot,ap,np,nm,lambda,thetaG,gamma,$
+                                               nt=nt,norm=1,npts=nptsx)
 forcesx[1,*] = -forcesx[1,*];For some reason transverse force is opposite what
                             ;it should be. FIX ME
 forcesy[2,*] = -forcesy[2,*];For some reason transverse force is opposite what
