@@ -66,7 +66,6 @@ for i=0L, NT-1L do begin
  fac *= SIN(theta)
  ;Cal besselcoefficient
  am_ae = fac*besselcoefficient(n,m,pos,theta,k)
- 
  am_mn_temp[i] = am_ae[0]
  ae_mn_temp[i] = am_ae[1]
 endfor 

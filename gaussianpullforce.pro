@@ -35,18 +35,23 @@
 ;    int: in mW/um^2
 ;
 ;OUTPUTS:
-;    pullforce: strongest pulling force of gaussian beam 
+;    [position,pullforce]: position of the strongest pulling force,
+;                          and the strongest pulling force
 ;
 ;DEPENDENCY:
 ;
 ;MODIFICATION HISTORY:
 ; 2014/06/17 Written by David B. Ruffner, New York University
+; 2014/06/19 Added test of stability to code
 
-function gaussianpullforce, ap,np,nm,lambda,thetaG,gamma,int=int,norm=norm,nt=nt
+function gaussianpullforce, ap,np,nm,lambda,thetaG,gamma,$
+                            int=int,norm=norm,nt=nt,nostability=nostability
 
 if n_elements(int) eq 0 then int = 1.
 if n_elements(NT) eq 0 then NT = 10.
 if n_elements(norm) eq 0 then norm = 0
+if n_elements(nostability) eq 0 then nostability=0
+stable = 1
 
 ;speed of light
 c = 299792458.d; m/s
@@ -85,6 +90,9 @@ for i=0,npts-1 do begin $
    bscs = gaussiantrapcoefficientsint(pos,nc,k,gamma,thetaG,nt) & $
    ;Calculate the force
    forces[*,i] = f0*normbartonforce(bscs,ap,np,nm,lambda) & $
+   if ~nostability then $
+      stable = gaussianteststableforce(zs[i],ap,np,nm,lambda,thetaG,gamma) & $
+   if not stable then forces[*,i] = [0.,0.,1.+i*.1] & $
 endfor
 
 order = sort(forces[2,*])
@@ -125,6 +133,11 @@ while abc[1]-abc[0] gt tol do begin $
    bscs = gaussiantrapcoefficientsint(pos,nc,k,gamma,thetaG,nt) & $
    ;Calculate the force
    newf = f0*normbartonforce(bscs,ap,np,nm,lambda) & $
+   if ~nostability then $
+      stable = gaussianteststableforce(x,ap,np,nm,lambda,thetaG,gamma) & $
+   if not stable then begin
+      newf = [0.,0.,1.+0.001*count] 
+   endif
    fx = newf[2] & $
    ;form new bracket
    fs = [fabc,fx] & $
@@ -141,7 +154,7 @@ while abc[1]-abc[0] gt tol do begin $
 endwhile
 ;print,"new min ",count,abc[1],fabc[1] 
 
-return,fabc[1]
+return,[abc[1],fabc[1]]
 
 end
 
