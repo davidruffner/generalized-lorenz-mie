@@ -1,6 +1,6 @@
 ;+
 ;NAME:
-;    conveyorfixedpoint.pro
+;    gaussianfixedpoint.pro
 ;
 ; PURPOSE:
 ;    Calculate the axial fixed point and the axial and transvers
@@ -10,7 +10,7 @@
 ;    Mathematics
 ;
 ;CALLING SEQUENCE:
-;    fixedpt = conveyorfixedpoint(ap,np,nm,eta1,eta2,intensity,npts,$
+;    fixedpt = gaussianfixedpoint(ap,np,nm,eta1,eta2,intensity,npts,$
 ;                                  fr_filename=fr_filename,$
 ;                                  fz_filename=fz_filename)
 ;
@@ -47,19 +47,26 @@
 ; 2014/06/21 DBR: Added norm,verbose, keywords
 
 
-function conveyorfixedpoint, ap,np,nm,lambda,eta1,eta2,$
-                             int=int,npts=npts,norm=norm,$
+function gaussianfixedpoint, ap,np,nm,lambda,thetaG,gamma,$
+                             int=int,nt=nt,npts=npts,norm=norm,$
                              verbose=verbose,$
                              fr_filename=fr_filename,$
                              fz_filename=fz_filename
 
 if n_elements(npts) eq 0 then npts = 100
 if n_elements(int) eq 0 then int = 1.
+if n_elements(nt) eq 0 then nt = 30
 if n_elements(verbose) eq 0 then verbose=0
-if verbose then print,eta1,eta2
+if verbose then print,thetaG,gamma
+
+
+w0 = sqrt(8*!pi)*lambda/(2*!pi*sin(thetaG))
+zr = !pi*w0^2/lambda
+zrange = [0,1.5*zr]
+
 ;Calculate the axial forces on axis
-forcesz = conveyoraxialforce(ap,np,nm,lambda,eta1,eta2,$
-                                      int=int,npts=npts,norm=norm)
+forcesz = gaussianaxialforce(ap,np,nm,lambda,gamma,thetaG,$
+                             int=int,nt=nt,npts=npts,norm=norm,zrange=zrange)
 
 if n_elements(fz_filename) ne 0 then write_gdf,forcesz,fz_filename
 
@@ -98,10 +105,10 @@ zstiffness = -mean([dforceszdz[count],dforceszdz[count+1]])
 ;Let's go the size of a particle radius on either side
 ;nptsx = floor(npts/3.)
 nptsx=5
-forcesx = conveyorxforce(stableroot,ap,np,nm,lambda,eta1,eta2,$
-                                               norm=norm,int=int,npts=nptsx)
-forcesy = conveyoryforce(stableroot,ap,np,nm,lambda,eta1,eta2,$
-                                               norm=norm,int=int,npts=nptsx)
+forcesx = gaussianxforce(stableroot,ap,np,nm,lambda,thetaG,gamma,$
+                                    nt=nt,norm=norm,int=int,npts=nptsx)
+forcesy = gaussianyforce(stableroot,ap,np,nm,lambda,thetaG,gamma,$
+                                    nt=nt,norm=norm,int=int,npts=nptsx)
 forcesx[1,*] = -forcesx[1,*];For some reason transverse force is opposite what
                             ;it should be. FIX ME
 forcesy[2,*] = -forcesy[2,*];For some reason transverse force is opposite what
@@ -109,7 +116,7 @@ forcesy[2,*] = -forcesy[2,*];For some reason transverse force is opposite what
 if verbose then begin 
    print,""
    print,"printing key parameters"
-   print,stableroot,ap,np,nm,lambda,eta1,eta2,nptsx
+   print,stableroot,ap,np,nm,lambda,thetaG,gamma,nptsx
 endif
 
 if n_elements(fr_filename) ne 0 then write_gdf,forcesx,fr_filename

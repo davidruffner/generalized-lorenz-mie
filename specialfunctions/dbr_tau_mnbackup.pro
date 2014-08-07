@@ -40,7 +40,6 @@
 ; 03/18/2014 Written by David B. Ruffner, New York University
 ; 03/25/2014 Fixed a bug when m=0. Now it doesn't blow up
 ; 06/04/2014 DBR: commented out the low precision at poles message
-; 06/21/2014 DBR: fixed bug with divide by zero with m=0
 
 
 function dbr_tau_mn,x, n, minput
@@ -77,19 +76,13 @@ normfactor = Sqrt((2.d*double(n)+ 3.d)*(n+ 1.d -m)/$
                           ((2.d*double(n) + 1.d)*(n+ 1.d +m)))
 if m eq 0 then begin
    sintheta = sqrt(1-x^2)
-   tau_mn = fltarr(n_elements(sintheta))
-   b = where(abs(sintheta) lt tol,/null,complement=bc)
-   if bc ne !NULL then begin
-      tau_mn(bc) = parityfactor*((n + 1.d - m)* $
-                       dbr_plegendre(x(bc),n+1,m)/normfactor - $
-               (n + 1.d)*x(bc)*dbr_plegendre(x(bc),n,m))/sintheta(bc)
+   tau_mn = parityfactor*((n + 1.d - m)*dbr_plegendre(x,n+1,m)/normfactor - $
+               (n + 1.d)*x*dbr_plegendre(x,n,m))/sintheta
+   b = where(abs(sintheta) lt tol,/null)
+   if ~(b eq !NULL) then begin
+      ;print,"Low precision near pole, setting tau_mn to zero",n,m,sintheta
+      tau_mn(b) = 0
    endif
-   if b ne !NULL then tau_mn(b) = 0
-   ;; b = where(abs(sintheta) lt tol,/null)
-   ;; if ~(b eq !NULL) then begin
-   ;;    ;print,"Low precision near pole, setting tau_mn to zero",n,m,sintheta
-   ;;    tau_mn(b) = 0
-   ;; endif
 endif else begin
    tau_mn = parityfactor*((n + 1.d - m)*dbr_pi_mn(x,n+1,m)/normfactor - $
                (n + 1.d)*x*dbr_pi_mn(x,n,m))/m

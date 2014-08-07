@@ -86,12 +86,10 @@ zs = (zmax-zmin)*findgen(npts)/(npts-1.d)+zmin
 
 forces = fltarr(3,npts)
 for i=0,npts-1 do begin $
-                                ;print,string(13b),"getting
-                                ;beam
-                                ;coefficients",i,format='(A,A,I,$)' & $' 
-   print,"getting beam coefficients",i & $
+   print,string(13b),"getting beam coefficients",i,format='(A,A,I,$)' & $ 
    pos=[0,0,zs[i]] & $
-   bscs = gaussiantrapcoefficients(pos,nc,k,gamma,thetaG,NT) & $
+   ;print,"gamma ",gamma, " pos ",pos & $
+   bscs = gaussiantrapcoefficientsint(pos,nc,k,gamma,thetaG,NT) & $
    ;Calculate the force
    if norm eq 1 then begin $
        forces[*,i] = normbartonforce(bscs,ap,np,nm,lambda) & $

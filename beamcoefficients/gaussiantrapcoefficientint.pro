@@ -42,7 +42,9 @@
 ;MODIFICATION HISTORY:
 ; 06/11/2014 Written by Henrique W. Moyses, New York University
 ; 06/13/2014 Edited by David B. Ruffner, New York University: combined
-;             gaussiantrapcoefficient1.pro and gaussiantrapcoefficient2.pro 
+;             gaussiantrapcoefficient1.pro and
+;gaussiantrapcoefficient2.pro 
+; 06/23/2014 DBR: beam waist is also limited by gamma
 
 function gaussiantrapcoefficientint,n,m,pos,k,gamma,thetaG,NT
 
@@ -55,6 +57,13 @@ ae_mn_temp = dcomplexarr(NT)
 
 ;calculate w0
 w0 = SQRT(8.d * !Pi) / (k * sin(thetaG))
+;Also gamma can limit the beam waist
+if gamma ne 0 then begin
+   ;sinthetamax = 1/(sqrt(2)*gamma) 
+   sinthetamax = 1/(gamma) 
+   w0b = SQRT(8.d * !Pi) / (k * sinthetamax);Not sure about this factor
+   w0 = w0 > w0b
+endif
 
 ;fill up arrays of integrand coefficients
 for i=0L, NT-1L do begin

@@ -45,7 +45,7 @@
 ; 2014/06/19 Added test of stability to code
 ; 2014/06/20 Fixed an error with the return when there is no bracket
 
-function gaussianpullforce, ap,np,nm,lambda,thetaG,gamma,$
+function gaussianpullforce2, ap,np,nm,lambda,thetaG,gamma,$
                             int=int,norm=norm,nt=nt,nostability=nostability
 
 if n_elements(int) eq 0 then int = 1.
@@ -78,9 +78,9 @@ nc = n_elements(an)-1
 ;zvalues to calculate force over
 w0 = sqrt(8*!pi)*lambda/(2*!pi*sin(thetaG))
 zr = !pi*w0^2/lambda
-zmax = 1.5*zr
+zmax = 3.5*zr
 zmin = 0
-npts = 10
+npts = 100
 zs = (zmax-zmin)*findgen(npts)/(npts-1.d)+zmin
 
 
