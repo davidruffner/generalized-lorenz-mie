@@ -1,0 +1,227 @@
+\documentclass[aps,prl,twocolumn]{revtex4-1}
+
+\usepackage{graphicx}
+\graphicspath{{figures/}}
+\usepackage{amsmath}
+\usepackage{SIunits}
+
+\renewcommand{\vec}[1]{\mathbf{#1}}
+\newcommand{\uvec}[1]{\hat{#1}}
+\newcommand{\abs}[1]{\left\vert #1 \right\vert}
+\newcommand{\real}[1]{\Re\left\{ #1 \right\}}
+\newcommand{\imaginary}[1]{\Im\left\{ #1 \right\}}
+\newcommand{\mytilde}{\raise.17ex\hbox{$\scriptstyle\mathtt{\sim}$}}
+\newcommand{\pos}{\left(\mathbf{r} \right)}
+\newcommand{\bigM}{\mathbf{M}_{mn}}
+\newcommand{\bigN}{\mathbf{N}_{mn}}
+%\newcommand{\pol}{\mathbf{\rh}}
+
+\begin{document} 
+
+\title{Understanding the vector spherical harmonics}
+
+\author{David Ruffner}
+\author{David G. Grier}
+\affiliation{Department of Physics and Center for Soft Matter Research,
+  New York University, New York, NY 10003}
+
+\date{\today}
+\begin{abstract}
+  Working out the form of the vector spherical harmonics. 
+
+
+
+
+\end{abstract}
+
+
+
+\maketitle 
+
+The vector spherical harmonics can be used to decompose a vector field 
+in spherical polar coordinates. When the field is in this form we can 
+more easily calculated the scattering off of spherical particles. In fact
+each component of the incident field contributes to the scattered field
+multiplied by the corresponding $a_n$ and $b_n$ of Lorentz-Mie theory
+\cite{bohren_absorption_2008}. Each textbook uses it's own notation so 
+it is hard to compare between the two. Here we'll go through the calculation
+to compare Jackson \cite{jackson_classical_1998} to
+ Gouesbet \cite{gouesbet_t-matrix_2010}. 
+
+Jackson begins with the scalar wave equation,
+\begin{equation}
+  \label{eq:scalarwaveeq}
+  \nabla^2 \psi - \frac{1}{c^2} \frac{\partial^2 \psi}{\partial t^2} = 0.
+\end{equation}
+Solutions can be written as an expansion in multipole terms,
+\begin{equation}
+  \label{eq:generalscalarsolution}
+  \psi(\mathbf{r}) = \sum_{l,m} [A_{lm}z_l(kr)+B_{lm}z_l(kr)]Y_{lm}(\theta,\phi).
+\end{equation}
+We need to make a series of definitions.
+$Y_{lm}$ are the spherical harmonics, defined by,
+\begin{equation}
+  \label{eq:sphericalharmonic}
+  Y_{lm}(\theta,\phi) =  \tilde{P}_l^m(\cos \theta) e^{im\theta}
+\end{equation}
+Where $\tilde{P}_l^m(\cos \theta)$ are the normalized
+associated Legendre polynomials (which are calculated by dbr\_plegendre.pro),
+which are defined by,
+\begin{equation}
+  \label{eq:normalizedassociatedlegendrep}
+  \tilde{P}_l^m(x) = N_p (-1)^m (1-x^2)^{m/2} \frac{d^m}{dx^m}P_l(x)
+\end{equation}
+Where $P_l(x)$ are the Legendre Polynomials defined by Rodrigues' formula
+and the normalization is $N_p =\sqrt{\frac{(2l+1)(l-m)!}{4 \pi (l+m)!}}$.
+And $z_l(kr)$ is one of the spherical Bessel functions, for instance
+\begin{equation}
+  \label{eq:sphericalbessel}
+  j_l(x) = \sqrt{\frac{\pi}{2 x}}J_{l+1/2}(x), 
+\end{equation}
+Where $J_l(x)$ is a Bessel funtion of the first kind of order $l$. 
+
+Next Jackson points out that Maxwell's equations can be written in the form
+of the helmholtz equation and a divergence condition,
+\begin{equation}
+  \label{eq:maxwells}
+  (\nabla^2 + k^2)\mathbf{E} = 0  \hspace{8mm}and\hspace{8mm}
+  \nabla \cdot \mathbf{E} = 0
+\end{equation}
+with $\mathbf{H}$ given by
+\begin{equation}
+  \label{eq:maxwells2}
+  \mathbf{H} = \frac{-i}{kZ_0} \nabla \times \mathbf{E}
+\end{equation}
+Where $Z_0=\frac{1}{c \epsilon_0}$ is the impedence of free space.
+The hard part is enforcing the divergence condition. We can instead show
+that $\mathbf{r} \cdot \mathbf{E}$ and $\mathbf{r} \cdot \mathbf{H}$ each
+satisfy the scalar Helmoltz equation by using the vector identity,
+\begin{equation}
+  \label{eq:vectoridentity}
+   \nabla^2 (\mathbf{r}\cdot \mathbf{A}) = \mathbf{r}\cdot \nabla^2\mathbf{A}
+                                          +2 \nabla \cdot \mathbf{A}.
+\end{equation}
+Consequently we can expand $\mathbf{r} \cdot \mathbf{E}$ and
+ $\mathbf{r} \cdot \mathbf{H}$ in terms of Eq.~(\ref{eq:generalscalarsolution})
+which is why you need the two families of coefficients. It's interesting
+that you only need two scalar fields to construct a vector field, but this
+comes from the transverse nature of the fields.
+
+To extract the electric an magnetic fields from the scalar fields we need
+to use the angularmomentum operator, $\mathbf{L}$, defined by
+\begin{equation}
+  \label{eq:angularmomentum}
+  \mathbf{L} = -i \mathbf{r} \times \nabla.
+\end{equation}
+Jackson shows that if,
+\begin{equation}
+  \label{eq:magneticmultipole}
+  \mathbf{r}\cdot \mathbf{H}_{lm}^{(M)} = \frac{l(l+1)}{k} z_l(kr) 
+                                        Y_{lm}(\theta,\phi)
+\end{equation}
+Then the electric field corresponding to this magnetic multipole of
+order $l$,$m$ is,
+\begin{equation}
+  \label{eq:Efieldmagneticmultipole}
+  \mathbf{E}_{lm}^{(M)} = Z_0 z_l(kr) \mathbf{L} Y_{lm}(\theta,\phi).
+\end{equation}
+Similarly for an electric multipole field,
+\begin{equation}
+  \label{eq:Efieldelectricmultipole}
+  \mathbf{E}_{lm}^{(E)} =  \frac{i Z_0}{k} \nabla \times
+                 ( z_l(kr) \mathbf{L} Y_{lm}(\theta,\phi)).
+\end{equation}
+These two sets of functions are the vector spherical harmonics which
+are orthogonal funtions which allow us to write a general vector field
+as a sum of them,
+\begin{align}
+  \label{eq:VSHsum}
+  \mathbf{E} = \sum_{l,m} \left[\frac{i}{k} a_E(l,m) \nabla \times
+                 ( z_l(kr) \mathbf{L} Y_{lm}(\theta,\phi)) \right. \\
+                       \left.  +a_M(l,m) \mathbf{L} Y_{lm}(\theta,\phi)\right].
+\end{align}
+Here we depart slightly from Jackson who defines his vector spherical
+harmonic function $\mathbf{X}_{lm}$ with a factor of $1/\sqrt{l(l+1)}$ which
+we omit to match with other formulations. 
+
+We can write these functions in spherical coordinates to enable comparison
+with other works. Considering the magnetic term first,
+\begin{align}
+  \label{eq:magneticVSH}
+  j_l(kr) \mathbf{L} Y_{lm}(\theta,\phi) &= 
+                -i j_l(kr) \mathbf{r} \times \nabla Y_{lm}(\theta,\phi) \\
+               =  
+        -&\hat{\phi}i\frac{ \psi_l(kr)}{kr} \partial_\theta Y_{lm}(\theta,\phi)  \\
+   - &\hat{\theta}\frac{ \psi_l(kr)}{kr} \frac{m Y_{lm}(\theta,\phi)}
+                                         {\sin \theta},
+\end{align}
+Where $\psi_l(kr) = kr z_l(kr)$.
+Next we evaluate the electric term,
+\begin{align}
+  \label{eq:electricVSH}
+  \frac{-i}{k} \nabla \times j_l(kr) \mathbf{L} Y_{lm}(\theta,\phi) &=
+        \frac{-i}{k} \nabla \times \mathbf{L}(j_l(kr) Y_{lm}(\theta,\phi)) \\   
+       = &\hat{r} \frac{l(l+1)}{(kr)^2}\psi_l(kr)Y_{lm}(\theta,\phi) \\
+         +&\hat{\theta} \frac{1}{kr} \psi_l^\prime(kr)
+                       \partial_\theta Y_{lm}(\theta,\phi) \\
+         +&\hat{\phi} \frac{i m}{kr} \psi_l^\prime(kr)
+                       \frac{ Y_{lm}(\theta,\phi)}{\sin \theta}.
+         %% +&\hat{\phi}
+\end{align}
+There are a number of steps in evaluating this term. We used the fact that
+the angular momentum operator only operates on the angular variables
+also we used (9.125) in Jackson and Eq.(8) in 
+Gouesbet \cite{gouesbet_t-matrix_2010}. This gives the same result
+as Eq.(1) and Eq.(2) in Gouesbet for the magnetic and the electric VSHs
+respectively, except for a factor of $(-1)^m$.
+
+For a circularly polarized plane wave travelling along the
+z axis the coefficients are,
+\begin{align}
+  \label{eq:coefficients}
+  a_M(l,m)_\pm &= i^l \sqrt{\frac{4 \pi (2 l+1)}{l (l+1)}} \delta_{m,\pm1} \\
+  a_E(l,m)_\pm &= \pm i  a_M(l,m)_\pm
+\end{align} 
+These are different than the ones in Bohren and Huffman by the square root.
+
+Numerically it's more stable to write the field in terms of the normalized
+ angular functions $\tilde{\pi}_{mn}$ and $\tilde{\tau}_{mn}$, which
+are defined by,
+\begin{equation}
+  \label{eq:pi_nm}
+  \tilde{\pi}_{mn}(\cos \theta) =
+              m\frac{ \tilde{P}_n^m (\cos \theta)}{\sin \theta}
+\end{equation}
+and
+\begin{equation}
+  \label{eq:pi_nm}
+  \tilde{\tau}_{mn}(\cos \theta) = \partial_\theta \tilde{P}_n^m (\cos \theta).
+\end{equation}
+This gives us the vector spherical harmonics,
+\begin{align}
+  \label{eq:magneticVSH}
+  j_l(kr) \mathbf{L} Y_{lm}(\theta,\phi) &= 
+        -\hat{\phi}i\frac{ \psi_l(kr)}{kr} \tilde{\tau}_{mn}(\cos \theta) 
+             e^{i m \phi}  \\
+   - &\hat{\theta}\frac{ \psi_l(kr)}{kr}\tilde{\pi}_{mn}(\cos \theta)
+             e^{i m \phi},
+\end{align}
+and,
+\begin{align}
+  \label{eq:electricVSH}
+  \frac{-i}{k} \nabla \times j_l(kr) \mathbf{L} Y_{lm}(\theta,\phi) &=
+         \hat{r} \frac{l(l+1)}{(kr)^2}\psi_l(kr)Y_{lm}(\theta,\phi) \\
+         +&\hat{\theta} \frac{1}{kr} \psi_l^\prime(kr)
+                      \tilde{\tau}_{mn}(\cos \theta) 
+             e^{i m \phi}  \\
+         +&\hat{\phi} \frac{i}{kr} \psi_l^\prime(kr)\tilde{\pi}_{mn}(\cos \theta)
+             e^{i m \phi}.
+         %% +&\hat{\phi}
+\end{align}
+%\bibliography{abbreviations,grier,tweezer,dgg}
+%\input{soconveyor1.bbl}
+\bibliography{tractorrangeLibrary}
+%\bibliographystyle{publist}
+\bibliographystyle{chicago}
+
+\end{document} 

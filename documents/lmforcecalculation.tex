@@ -1,0 +1,259 @@
+\documentclass[aps,prl,twocolumn]{revtex4-1}
+
+\usepackage{graphicx}
+\graphicspath{{figures/}}
+\usepackage{amsmath}
+\usepackage{SIunits}
+
+\renewcommand{\vec}[1]{\mathbf{#1}}
+\newcommand{\uvec}[1]{\hat{#1}}
+\newcommand{\abs}[1]{\left\vert #1 \right\vert}
+\newcommand{\real}[1]{\Re\left\{ #1 \right\}}
+\newcommand{\imaginary}[1]{\Im\left\{ #1 \right\}}
+\newcommand{\mytilde}{\raise.17ex\hbox{$\scriptstyle\mathtt{\sim}$}}
+\newcommand{\pos}{\left(\mathbf{r} \right)}
+\newcommand{\bigM}{\mathbf{M}_{mn}}
+\newcommand{\bigN}{\mathbf{N}_{mn}}
+%\newcommand{\pol}{\mathbf{\rh}}
+
+\begin{document} 
+
+\title{Force on a spherical particle in an optical conveyor}
+
+\author{David Ruffner}
+\author{David G. Grier}
+\affiliation{Department of Physics and Center for Soft Matter Research,
+  New York University, New York, NY 10003}
+
+\date{\today}
+\begin{abstract}
+  Derivation of the calculation of the force on a spherical particle
+in an optical conveyor using Lorenz-Mie theory. 
+
+
+
+
+\end{abstract}
+
+
+
+\maketitle 
+
+In order to calculate the force we must write down the incident field 
+in terms of the vector spherical harmonics. This allows us to calculate
+the scattered field by matching the boundary conditions at the scattering
+sphere
+\cite{barton_internal_1988}. Furthermore given the scattered field we
+can calculate the force and torque on the spherical particle 
+\cite{barton_theoretical_1989}. 
+
+The field of an optical conveyor is
+a sum of two Bessel beams, and each Bessel beam can be thought of as
+a cone of plan waves \cite{cizmar_sub-micron_2006}. The electric
+field of the Bessel beam as a function of position, $\mathbf{r}$, 
+can be written as,
+\begin{equation}
+  \label{eq:besselfield}
+  \mathbf{E}\pos =  E_0 \int_0^{2\pi} \mathbf{e}_0(\theta_0,\phi^\prime) 
+      e^{i \mathbf{k}(\theta_0,\phi^\prime) \cdot \mathbf{r} } d\phi^\prime,
+\end{equation}
+Where $E_0$ is the amplitude of each component plane wave, 
+$\mathbf{e}_0(\theta_0,\phi^\prime)$ is the polarization, and 
+$\mathbf{k}(\theta_0,\phi^\prime)$ is the wavevector. The cone angle, $\theta_0$,
+gives us the wavevector of each component plane wave,
+\begin{align}
+  \label{eq:wavevector}
+  \mathbf{k}(\theta_0,\phi^\prime) &= k \hat{r}(\theta_0,\phi^\prime) \\
+  &= k(\sin\theta_0 \cos \phi^\prime \hat{x} +
+       \sin\theta_0 \sin \phi^\prime \hat{y} +
+       \cos\theta_0) 
+\end{align}
+ in terms of the wavenumber, $k = 2 \pi n_{ext}/\lambda$, where $n_{ext}$ is the
+refractive index of the medium and $\lambda$ is the wavelength of the 
+light. If we assume that the Bessel beam was formed from light polarized 
+in the $\hat{x}$ direction, then we can get the polarization of 
+each plane wave component decomposing it in terms of $\hat{\theta}$
+and $\hat{\phi^\prime}$ since these are the two directions transverse to 
+$\mathbf{k}(\theta_0,\phi^\prime)$. Consequently the polarization of 
+each plane wave component becomes,
+\begin{equation}
+  \label{eq:polarization}
+  \mathbf{e}_0(\theta_0,\phi^\prime) = \cos \phi^\prime \,\hat{\theta}(\theta_0,\phi^\prime)
+                               +\sin \phi^\prime\, \hat{\phi^\prime}(\theta_0,\phi^\prime).
+\end{equation}
+
+The electric field can always expressed in terms of the
+vector spherical harmonics $\bigM^{(1)}$ and $\bigN^{(1)}$ 
+\cite{bohren_absorption_2008}, with the following expansion,
+\begin{equation}
+  \label{eq:expansion}
+  \mathbf{E} = -i \sqrt{\frac{2n+1}{4\pi}\frac{(n-m)!}{(n+m)!}}
+     \sum_{n=1}^{\infty}\sum_{m=-n}^{n} \left(
+     p_{mn} \bigN^{(1)}+q_{mn} \bigM^{(1)} \right),
+\end{equation}
+Where we are neglecting the position dependence for clarity.
+The coefficients $p_{mn}$ and $q_{mn}$ are called the beam shape coefficients
+(BSCs) and they can be determined by the following integral,
+\begin{equation}
+  \label{eq:pmnintegral}
+  p_{mn} = i \sqrt{\frac{4\pi}{2n+1}\frac{(n+m)!}{(n-m)!}} 
+          \frac{\int_{0}^{2\pi}\int_{0}^{\pi} 
+             \mathbf{E} \cdot \bigN^* 
+             \sin \theta d\theta d\phi^\prime}
+          {\int_{0}^{2\pi}\int_{0}^{\pi} 
+             |\bigN|^2
+             \sin \theta d\theta d\phi^\prime},
+\end{equation}
+And a similar one for $q_{mn}$ with $\bigM$ instead of $\bigN$.
+ This integral is difficult in general
+however Taylor and Love solved it analytically in the case of a 
+Bessel beam \cite{taylor_multipole_2009-1}. Essentially they wrote
+the Bessel beam in terms of a cone of plane waves like we have above.
+The found the BSCs for each plane wave as was shown in 
+\cite{mackowski_calculation_1994}, and then added them all together and
+were able to compute the integral. This enables us to write down the
+BSCs for a Bessel beam,
+\begin{align}
+  \label{eq:besselBSCs}
+  p_{mn}\pos = &E_0 U_n e^{ikz \cos \theta_0} \\
+          &\, [ \tilde{\tau}_{mn}(\cos\theta_0)\, I^+(\rho,\phi) + \\
+          &\,\,\, \tilde{\pi}_{mn}(\cos\theta_0)\, I^-(\rho,\phi) ]
+\end{align}
+where $\rho = \sqrt{x^2+y^2}$ is the distance from the beam axis, and 
+$\phi = \arctan(-y/x)- \pi/2$ is the azimuthal angle. To calculate
+$q_{mn}$ just exchange the $\tilde{\tau}_{mn}$ with the $\tilde{\pi}_{mn}$.
+There is the factor
+$U_n = \frac{4 \pi i^n}{n(n+1)}$ and then functions 
+in terms of the modified Legendre Polynomials, $P^m_n$,
+\begin{align}
+  \label{eq:anglefunctions}
+  \tilde{\pi}_{mn}(\cos\theta_0) &= 
+      \sqrt{\frac{2n+1}{4\pi}\frac{(n-m)!}{(n+m)!}}
+      \frac{m}{\sin\theta_0}P^m_n(\cos\theta_0),\\
+  \tilde{\tau}_{mn}(\cos\theta_0) &= 
+      \sqrt{\frac{2n+1}{4\pi}\frac{(n-m)!}{(n+m)!}}
+      \frac{d}{d\theta_0}P^m_n(\cos\theta_0).
+\end{align}
+Finally there are the results from solving the integrals,
+\begin{align}
+  \label{eq:integrals}
+  I^\pm(\rho,\phi) = \pi 
+       \left( e^{i(m-1)\phi} J_{1-m}(k \sin \theta_0 \rho) \,\, \pm \right.\\
+         \left. e^{i(m+1)\phi} J_{-1-m}(k \sin \theta_0 \rho) \right).
+\end{align}
+The BSCs for the Bessel beam are still complicated, however this form is
+much more useful than the integral in Eq.~(\ref{eq:pmnintegral}). All one has 
+to do to calculate $p_{mn}$ is to evaluate Bessel functions and associated 
+Legendre polynomials.
+
+The next step is to determine the scattered field from the BSCs. The BSCs 
+depend on position because they refer to a spherical polar cooridinate system
+centered on the particle. This allows us to easily match the boundary 
+conditions which determines the coefficients of the scattered field
+\cite{barton_internal_1988}. One notational issue is Barton uses a different
+convention for the BSCs but they are related according to,
+\begin{equation}
+  \label{eq:notation}
+  A_{mn} = \frac{ip_{mn}}{2\pi k a}, \,\,\,\, 
+  B_{mn} = \frac{n_{ext}q_{mn}}{2\pi k a}.
+\end{equation}
+The coefficients of the scattered field are,
+\begin{align}
+  \label{eq:scatteredfieldcoeff}
+  a_{mn} &= \frac{\psi_n^\prime(k_{int}a)\psi_n(k_{ext}a)-
+                   \bar{n}\psi_n(k_{int}a)\psi_n^\prime(k_{ext}a)}
+                {\bar{n}\psi_n(k_{int}a)\xi_n^{(1)\prime}(k_{ext}a)-
+                   \psi_n^\prime(k_{int}a)\xi_n^{(1)}(k_{ext}a)} A_{mn} ,\\
+  b_{mn} &= \frac{\bar{n}\psi_n^\prime(k_{int}a)\psi(k_{ext}a)-
+                   \psi_n(k_{int}a)\psi_n^\prime(k_{ext}a)}
+                {\psi_n(k_{int}a)\xi_n^{(1)\prime}(k_{ext}a)-
+                   \bar{n}\psi_n^\prime(k_{int}a)\xi_n^{(1)}(k_{ext}a)} B_{mn}, 
+\end{align}
+Where $\xi_n^{(1)}= \psi_n - i \chi_n$ and $\psi_n$ and $\chi_n$ are the 
+Ricatti-Bessel functions. Additionally, $k_{int}$ is the wavenumber 
+inside the sphere, $k_{ext}$ is the wavenumber outside the sphere, and
+$a$ is the radius of the spherical particle. Finally the complex index
+of refraction is given by $\bar{n}=\sqrt{\bar{\epsilon}_{int}/\epsilon_{ext}}$  
+where $\bar{\epsilon}_{int} = \epsilon_{int} + i4\pi \sigma/\omega$ and 
+$\sigma$ is the electrical conductivity of the particle. This can 
+be simplified using the $a_n$ and $b_n$ in Bohren and Huffman, 
+\begin{align}
+  \label{eq:scatteredfieldcoeff}
+  a_{mn} &= -a_n A_{mn} ,\\
+  b_{mn} &= -b_n B_{mn}, 
+\end{align}
+(CHECK).
+
+Given these BSCs for the incident and the scattered fields
+we can now calculate the force on a spherical particle
+using the formalism derived by Barton et. al. \cite{barton_theoretical_1989}.
+Integrating the Maxwell's stress tensor,$\mathbf{T}$ ,
+ over a surface enclosing the particle
+determines the optical force,
+\begin{equation}
+  \label{eq:maxwellforce}
+  <\mathbf{F} \pos> = < \oint_S \hat{n} \cdot \mathbf{T} dS >.
+\end{equation}
+Barton substitutes the series expression for the fields,
+ Eq.~(\ref{eq:expansion}), into the surface integral and then evaluates
+in the limit large radius. It's possible then to directly integrate
+and express the force on the particle in terms of the BSCs of the 
+incident, $A_{mn}$ and $B_{mn}$ and scattered fields,$a_{mn}$ and $b_{mn}$. The
+ expression is huge and nasty:
+\begin{widetext}
+\begin{align}
+  \label{eq:forcexy}
+  \frac{<F_x>+i<F_y>}{a^2 E_0^2} = 
+     & \frac{\alpha^2}{16 \pi} i \sum_{n=1}^{\infty}\sum_{m=-n}^{n}
+        \left[\sqrt{\frac{(n+m+2)(n+m+1)}{(2n+1)(2n+3)}}n(n+2) \times \right.\\
+           & \left.(2 \epsilon_{ext} a_{mn}a_{m+1,n+1}^*+
+              \epsilon_{ext} a_{mn}A_{m+1,n+1}^*+
+              \epsilon_{ext} A_{mn}a_{m+1,n+1}^*+
+              2 b_{mn}b_{m+1,n+1}^*+
+              b_{mn}B_{m+1,n+1}^*+ \right. \\
+              & \left. B_{mn}b_{m+1,n+1}^* ) +
+           \sqrt{\frac{(n-m+1)(n-m+2)}{(2n+1)(2n+3)}}n(n+2) (
+              2 \epsilon_{ext} a_{m-1,n+1}a_{mn}^*+
+              \epsilon_{ext} a_{m-1,n+1}A_{mn}^*+ \right. \\
+              & \left. \epsilon_{ext} A_{m-1,n+1}a_{mn}^*+
+              2 b_{m-1,n+1}b_{mn}^*+
+              b_{m-1,n+1}B_{mn}^*+
+              B_{m-1,n+1}b_{mn}^*) \right. \\
+           & \left. -\sqrt{(n+m+1)(n-m)}\sqrt{\epsilon_{ext})} (
+              -2 a_{mn}b_{n,m+1}^*+
+              2 b_{mn}a_{n,m+1}^*+
+              -a_{mn}B_{n,m+1}^*+\right. \\
+              & \left. b_{mn}A_{n,m+1}^*+
+              B_{mn}a_{n,m+1}^*+
+              -A_{mn}b_{n,m+1}^*)\right]
+\end{align}
+and,
+\begin{align}
+  \label{eq:forcez}
+  \frac{<F_z>}{a^2 E_0^2} =
+     & -\frac{\alpha^2}{8 \pi} \sum_{n=1}^{\infty}\sum_{m=-n}^{n} \Im 
+        \left\{ \sqrt{\frac{(n-m+1)(n+m+1)}{(2n+1)(2n+3)}}n(n+2)\times
+            \right. \\
+            & \left. (2 \epsilon_{ext} a_{m,n+1}a_{mn}^*+ 
+               \epsilon_{ext} a_{m,n+1}A_{mn}^*+
+               \epsilon_{ext} A_{m,n+1}a_{mn}^*+
+               2 b_{m,n+1}b_{mn}^*+ 
+               b_{m,n+1}B_{mn}^*+ \right.\\
+               & \left. B_{m,n+1}b_{mn}^*)+
+            \sqrt{\epsilon_{ext}}m(2a_{mn}b_{mn}^*+
+               a_{mn}B_{mn}^*+
+               A_{mn}b_{mn}^*)\right\}.
+\end{align}
+\end{widetext}
+There are also similar expressions in Farsund and Felderhof
+ \cite{farsund_force_1996} and in Mazolli et. al. \cite{mazolli_theory_2003}.
+So we should be able to catch any mistakes in these equations.
+
+
+%\bibliography{abbreviations,grier,tweezer,dgg}
+%\input{soconveyor1.bbl}
+\bibliography{tractorrangeLibrary}
+%\bibliographystyle{publist}
+\bibliographystyle{chicago}
+
+\end{document} 
