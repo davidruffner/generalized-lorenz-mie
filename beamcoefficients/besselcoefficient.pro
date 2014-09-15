@@ -19,6 +19,11 @@
 ;
 ;    m,n:    indicies of the coefficient
 ;
+;    k: The wavenumber of the light
+;
+;KEYWORDS:
+;    pol: a two element vector of the polarization ([xpol,ypol])
+;
 ;OUTPUTS:
 ;    [p_mn,q_mn]: Complex coefficient for the vector spherical
 ;    harmonics
@@ -32,8 +37,10 @@
 ; 03/06/2014 Written by David B. Ruffner, New York University
 ; 03/21/2014 Updated pi and tau functions
 ; 03/25/2014 Added a factor to match up with Jackson
+; 09/12/2014 DBR: added a pol keyword for determining polarization of
+;                 the bessel beam
 
-function besselcoefficient,n,m,pos,theta0,k
+function besselcoefficient,n,m,pos,theta0,k,pol=pol
 
 ;arranging imput
 sz = size(pos)
@@ -46,6 +53,7 @@ endif else begin
    y = pos[1,*]
    z = pos[2,*]
 endelse
+if n_elements(pol) eq 0 then pol=[1,0];Default to x polarized beam
 rho = sqrt(x^2 + y^2)
 phi = atan(-y,x)-!pi/2
 
@@ -74,9 +82,20 @@ i2 = !pi*exp(ci*(m+1)*phi)*beselj(x,-1-m)
 i_plus = i1+i2
 i_minus = i1-i2
 
-ae_mn = jacksonfactor*un*expftr*(tau_mn*i_plus+pi_mn*i_minus)*phasefactor_e
+;x polarization coefficients
+ae_mnx = jacksonfactor*un*expftr*(tau_mn*i_plus+pi_mn*i_minus)*phasefactor_e
 
-am_mn = jacksonfactor*un*expftr*(pi_mn*i_plus+tau_mn*i_minus)*phasefactor_m
+am_mnx = jacksonfactor*un*expftr*(pi_mn*i_plus+tau_mn*i_minus)*phasefactor_m
+
+;y polarization coefficients
+ae_mny = -ci*jacksonfactor*un*expftr* $
+                     (tau_mn*i_minus+pi_mn*i_plus)*phasefactor_e
+
+am_mny = -ci*jacksonfactor*un*expftr* $
+                     (pi_mn*i_minus+tau_mn*i_plus)*phasefactor_m
+
+ae_mn = pol[0]*ae_mnx+pol[1]*ae_mny
+am_mn = pol[0]*am_mnx+pol[1]*am_mny
 
 return,[am_mn,ae_mn]
 end
