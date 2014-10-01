@@ -30,6 +30,9 @@
 ;    NT:      number of terms to use in integration (100 is usually a
 ;             good number)
 ;
+;KEYWORDS:
+;    pol: a two element vector of the polarization ([xpol,ypol])
+;
 ;OUTPUTS:
 ;    [p_mn,q_mn]: Complex coefficient for the vector spherical
 ;    harmonics
@@ -45,8 +48,9 @@
 ;             gaussiantrapcoefficient1.pro and
 ;gaussiantrapcoefficient2.pro 
 ; 06/23/2014 DBR: beam waist is also limited by gamma
+; 09/15/2014 DBR: added a pol keyword for determining the polarization
 
-function gaussiantrapcoefficientint,n,m,pos,k,gamma,thetaG,NT
+function gaussiantrapcoefficientint,n,m,pos,k,gamma,thetaG,NT,pol=pol
 
 ;define integration step angles
 delta = dindgen(NT) * thetaG / (NT-1)
@@ -74,7 +78,7 @@ for i=0L, NT-1L do begin
  fac *= EXP(-(gamma * SIN(theta))^2.d)
  fac *= SIN(theta)
  ;Cal besselcoefficient
- am_ae = fac*besselcoefficient(n,m,pos,theta,k)
+ am_ae = fac*besselcoefficient(n,m,pos,theta,k,pol=pol)
  am_mn_temp[i] = am_ae[0]
  ae_mn_temp[i] = am_ae[1]
 endfor 

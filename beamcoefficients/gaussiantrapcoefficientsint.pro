@@ -27,6 +27,9 @@
 ;    NT : Number of terms to use in integration (100 is in general a
 ;         good number)
 ;
+;KEYWORDS:
+;    pol: a two element vector of the polarization ([xpol,ypol])
+;
 ;OUTPUTS:
 ;    {p_mn,q_mn}: Complex coefficients for the vector spherical
 ;    harmonics
@@ -37,9 +40,12 @@
 ;    J. Opt. Soc. Am. A. 26, 278(2009)
 ;
 ;MODIFICATION HISTORY:
-; 06/11/2014 Written by Henrique W. Moyses and David B. Ruffner, New York University
+; 06/11/2014 Written by Henrique W. Moyses and David B. Ruffner, New
+;York University
+; 09/15/2014 DBR: added a pol keyword for determining the polarization
 
-function gaussiantrapcoefficientsint,pos,nmax,k,gamma,thetaG,NT,verbose=verbose
+function gaussiantrapcoefficientsint,pos,nmax,k,gamma,thetaG,NT,$
+                                     verbose=verbose,pol=pol
 
 tol = 0.0001d
 if n_elements(verbose) eq 0 then verbose = 0
@@ -50,7 +56,7 @@ ae_mn = dcomplexarr(nmax+1,2*nmax+1)
 for n=1,nmax do begin
    for m = -n,n do begin
       ;first find the gaussian coefficient at required points
-      am_ae = gaussiantrapcoefficientint(n,m,pos,k,gamma,thetaG,NT)
+      am_ae = gaussiantrapcoefficientint(n,m,pos,k,gamma,thetaG,NT,pol=pol)
       am_mn[n,m] = am_ae[0]
       ae_mn[n,m] = am_ae[1]
       if abs(am_ae[0]) gt tol and verbose then begin
